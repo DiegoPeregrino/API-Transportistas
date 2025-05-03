@@ -1,4 +1,4 @@
-const Transportista = require('../models/Transportista');
+const Transportista = require('../models/transportista');
 
 // Obtener todos (con filtro activo)
 exports.listar = async (req, res) => {

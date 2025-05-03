@@ -1,53 +1,63 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
+const { body, validationResult } = require('express-validator');
 const Usuario = require('../models/usuario');
-const Transportista = require('../models/Transportista');
 
 const router = express.Router();
 
-// Login para ambos roles
-router.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    
+// Registro de usuario
+router.post('/register', [
+    body('email').isEmail().withMessage('Email inválido'),
+    body('password').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+    body('rol').optional().isIn(['admin', 'transportista']).withMessage('Rol inválido')
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errores: errors.array() });
+    }
+
     try {
-        const usuario = await Usuario.findOne({ email });
-        if (!usuario || !(await bcrypt.compare(password, usuario.password))) {
-            return res.status(401).json({ error: 'Credenciales inválidas' });
+        const { email, password, rol } = req.body;
+
+        if (await Usuario.findOne({ email })) {
+            return res.status(400).json({ error: 'El email ya está registrado' });
         }
 
-        const token = jwt.sign(
-            { 
-                id: usuario._id, 
-                rol: usuario.rol,
-                transportistaId: usuario.transportistaId 
-            },
-            process.env.JWT_SECRET,
-            { expiresIn: '8h' }
-        );
+        const usuario = new Usuario({ email, password, rol: rol || 'transportista' });
+        await usuario.save();
 
-        res.json({ 
-            token,
-            rol: usuario.rol,
-            transportistaId: usuario.transportistaId
-        });
+        const token = jwt.sign({ id: usuario._id, rol: usuario.rol }, process.env.JWT_SECRET, { expiresIn: '8h' });
 
+        res.status(201).json({ token, rol: usuario.rol });
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
 });
 
-// Middleware de autorización
-const authorize = (roles = []) => {
-    return (req, res, next) => {
-        if (!roles.includes(req.user.rol)) {
-            return res.status(403).json({ error: 'Acceso no autorizado' });
-        }
-        next();
-    };
-};
+// Login
+router.post('/login', [
+    body('email').isEmail().withMessage('Email inválido'),
+    body('password').notEmpty().withMessage('La contraseña es obligatoria')
+], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errores: errors.array() });
+    }
 
-// Ejemplo de ruta protegida solo para admin
-router.get('/transportistas', authorize(['admin']), async (req, res) => {
-    const transportistas = await Transportista.find();
-    res.json(transportistas);
+    try {
+        const { email, password } = req.body;
+
+        const usuario = await Usuario.findOne({ email });
+        if (!usuario || !(await usuario.comparePassword(password))) {
+            return res.status(401).json({ error: 'Credenciales inválidas' });
+        }
+
+        const token = jwt.sign({ id: usuario._id, rol: usuario.rol }, process.env.JWT_SECRET, { expiresIn: '8h' });
+
+        res.json({ token, rol: usuario.rol });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
 });
+
+module.exports = router;
