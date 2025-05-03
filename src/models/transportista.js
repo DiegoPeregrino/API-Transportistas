@@ -1,12 +1,15 @@
 const mongoose = require('mongoose');
 
-const transportistaSchema = new mongoose.Schema({
+const TransportistaSchema = new mongoose.Schema({
     nombre: { type: String, required: true },
     ruc: { type: String, required: true, unique: true },
-    direccion: { type: String },
-    telefono: { type: String },
-    email: { type: String },
-    activo: { type: Boolean, default: true },
-}, { timestamps: true });
+    direccion: String,
+    telefono: String,
+    email: String,
+    activo: { type: Boolean, default: true }
+}, { 
+    timestamps: true,
+    versionKey: false // Elimina el campo __v
+});
 
-module.exports = mongoose.model('Transportista', transportistaSchema);
+module.exports = mongoose.model('Transportista', TransportistaSchema);
