@@ -27,7 +27,7 @@ The `transportistas-api` is a RESTful API built with Node.js and Express for man
    ```
 3. Install the dependencies:
    ```
-   npm install
+   yarn install
    ```
 
 ### Configuration
@@ -39,7 +39,7 @@ The `transportistas-api` is a RESTful API built with Node.js and Express for man
 ### Running the Application
 1. Start the server:
    ```
-   npm start
+   yarn start
    ```
 2. The API will be running on `http://localhost:3000`.
 
