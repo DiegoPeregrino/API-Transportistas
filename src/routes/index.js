@@ -1,11 +1,13 @@
-// This file sets up the routes for the application and exports the router.
 const express = require('express');
 const router = express.Router();
+const {
+    createTransportista,
+    getTransportistas,
+    getTransportistaById,
+    updateTransportista,
+    deleteTransportista
+} = require('../controllers/index');
 
-// Import controller methods
-const { createTransportista, getTransportistas, getTransportistaById, updateTransportista, deleteTransportista } = require('../controllers/index');
-
-// Define routes
 router.post('/transportistas', createTransportista);
 router.get('/transportistas', getTransportistas);
 router.get('/transportistas/:id', getTransportistaById);
