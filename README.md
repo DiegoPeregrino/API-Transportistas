@@ -1,54 +1,54 @@
 # transportistas-api
 
-## Description
-The `transportistas-api` is a RESTful API built with Node.js and Express for managing transportistas. It provides endpoints for creating, reading, updating, and deleting transportistas, and connects to a MongoDB database using Mongoose.
+## Descripción
+La `transportistas-api` es una API RESTful construida con Node.js y Express para gestionar transportistas. Proporciona endpoints para crear, leer, actualizar e inhabilitar transportistas, y se conecta a una base de datos MongoDB usando Mongoose.
 
-## Technologies Used
+## Tecnologías utilizadas
 - Node.js
 - Express
 - Mongoose
 - CORS
 - dotenv
 
-## Setup Instructions
+## Instrucciones de configuración
 
-### Prerequisites
-- Node.js installed on your machine
-- MongoDB database (local or cloud)
+### Requisitos previos
+- Node.js instalado en tu máquina
+- Base de datos MongoDB (local o en la nube)
 
-### Installation
-1. Clone the repository:
+### Instalación
+1. Clona el repositorio:
    ```
    git clone <repository-url>
    ```
-2. Navigate to the project directory:
+2. Navega al directorio del proyecto:
    ```
    cd transportistas-api
    ```
-3. Install the dependencies:
+3. Instala las dependencias:
    ```
    yarn install
    ```
 
-### Configuration
-1. Create a `.env` file in the root directory and add your MongoDB connection string:
+### Configuración
+1. Crea un archivo `.env` en el directorio raíz y agrega tu cadena de conexión de MongoDB:
    ```
-   MONGODB_URI=<your_mongodb_connection_string>
+   MONGODB_URI=<tu_cadena_de_conexión_mongodb>
    ```
 
-### Running the Application
-1. Start the server:
+### Ejecución de la aplicación
+1. Inicia el servidor:
    ```
    yarn start
    ```
-2. The API will be running on `http://localhost:3000`.
+2. La API estará ejecutándose en `http://localhost:3000`.
 
-## API Endpoints
-- `GET /transportistas` - Retrieve all transportistas
-- `POST /transportistas` - Create a new transportista
-- `GET /transportistas/:id` - Retrieve a transportista by ID
-- `PUT /transportistas/:id` - Update a transportista by ID
-- `DELETE /transportistas/:id` - Delete a transportista by ID
+## Endpoints de la API
+- `GET /transportistas` - Recuperar todos los transportistas
+- `POST /transportistas` - Crear un nuevo transportista
+- `GET /transportistas/:id` - Recuperar un transportista por ID
+- `PUT /transportistas/:id` - Actualizar un transportista por ID
+- `DELETE /transportistas/:id` - Inhabilitar un transportista por ID
 
-## License
-This project is licensed under the MIT License.
+## Licencia
+Este proyecto está licenciado bajo la Licencia MIT.
