@@ -29,9 +29,15 @@ const Transportista = require('../models/transportista');
         try {
             const nuevo = new Transportista(req.body);
             await nuevo.save();
-            res.status(201).json(nuevo);
+            res.status(201).json({
+                mensaje: 'Transportista creado exitosamente',
+                transportista: nuevo
+            });
         } catch (error) {
-            res.status(400).json({ error: error.message });
+            res.status(400).json({
+                mensaje: 'Error al crear el transportista',
+                error: error.message
+            });
         }
     };
 

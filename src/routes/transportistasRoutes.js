@@ -1,5 +1,5 @@
 const express = require('express');
-const { body, param } = require('express-validator');
+const { body, param, validationResult } = require('express-validator');
 const {
     listar,
     obtener,
@@ -10,27 +10,28 @@ const {
 
 const router = express.Router();
 
-// Ruta base: /api/transportistas
-router.get('/listar', listar); // GET /api/transportistas/listar
-
-router.get('/:id', [
-    param('id').isMongoId().withMessage('ID inválido')
-], obtener); // GET /api/transportistas/:id
-
-router.post('/', [
+// Validaciones reutilizables
+const validarId = param('id').isMongoId().withMessage('ID inválido');
+const validarTransportista = [
     body('nombre').notEmpty().withMessage('El nombre es obligatorio'),
     body('ruc').notEmpty().withMessage('El RUC es obligatorio'),
     body('ruc').isLength({ min: 11, max: 11 }).withMessage('El RUC debe tener 11 caracteres')
-], crear);
+];
 
-router.put('/:id', [
-    param('id').isMongoId().withMessage('ID inválido'),
-    body('nombre').optional().notEmpty().withMessage('El nombre no puede estar vacío'),
-    body('ruc').optional().isLength({ min: 11, max: 11 }).withMessage('El RUC debe tener 11 caracteres')
-], actualizar); // PUT /api/transportistas/:id
+// Middleware para manejar errores de validación
+const manejarErroresDeValidacion = (req, res, next) => {
+    const errores = validationResult(req);
+    if (!errores.isEmpty()) {
+        return res.status(400).json({ errores: errores.array() });
+    }
+    next();
+};
 
-router.delete('/:id', [
-    param('id').isMongoId().withMessage('ID inválido')
-], inhabilitar); // DELETE /api/transportistas/:id
+// Rutas
+router.get('/', listar); // GET /api/transportistas
+router.get('/:id', validarId, manejarErroresDeValidacion, obtener); // GET /api/transportistas/:id
+router.post('/', validarTransportista, manejarErroresDeValidacion, crear); // POST /api/transportistas
+router.put('/:id', [validarId, ...validarTransportista], manejarErroresDeValidacion, actualizar); // PUT /api/transportistas/:id
+router.delete('/:id', validarId, manejarErroresDeValidacion, inhabilitar); // DELETE /api/transportistas/:id
 
 module.exports = router;

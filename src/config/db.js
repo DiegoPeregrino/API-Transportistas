@@ -30,4 +30,8 @@ mongoose.connection.on('disconnected', () => {
     console.warn('⚠️ MongoDB desconectado');
 });
 
+mongoose.connection.on('error', (err) => {
+    console.error('❌ Error en la conexión a MongoDB:', err.message);
+});
+
 module.exports = connectDB;
