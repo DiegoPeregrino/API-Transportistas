@@ -4,8 +4,6 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 const transportistaRoutes = require('./routes/transportistasRoutes');
-const swaggerUi = require('swagger-ui-express');
-const swaggerJsDoc = require('swagger-jsdoc');
 const helmet = require('helmet');
 
 const app = express();
@@ -27,31 +25,6 @@ app.use(helmet());
 
 // Conexión a MongoDB
 connectDB();
-
-// Configuración de Swagger
-const swaggerOptions = {
-    swaggerDefinition: {
-        openapi: '3.0.0',
-        info: {
-            title: 'Transportistas API',
-            version: '1.0.1',
-            description: 'API para gestión de transportistas con endpoints RESTful'
-        },
-        servers: [
-            { url: `http://localhost:${PORT}/api`, description: 'Servidor local' }
-        ],
-        tags: [
-            { name: 'Transportistas', description: 'Operaciones con transportistas' }
-        ]
-    },
-    apis: ['./routes/*.js']
-};
-
-const swaggerDocs = swaggerJsDoc(swaggerOptions);
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs, {
-    customSiteTitle: "API Transportistas Docs",
-    explorer: true
-}));
 
 // Rutas principales
 app.use('/api/transportistas', transportistaRoutes);
@@ -77,7 +50,6 @@ app.use((err, req, res, next) => {
 });
 
 // Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`🟢 Servidor ejecutándose en http://localhost:${PORT}`);
-    console.log(`📚 Documentación disponible en http://localhost:${PORT}/api-docs`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🟢 Servidor ejecutándose en http://0.0.0.0:${PORT}`);
 });
