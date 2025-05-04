@@ -78,6 +78,31 @@ exports.actualizar = async (req, res) => {
     }
 };
 
+// Actualizar la imagen de un transportista
+exports.actualizarImagen = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { imagen } = req.body;
+
+        const transportista = await Transportista.findByIdAndUpdate(
+            id,
+            { imagen },
+            { new: true, runValidators: true }
+        );
+
+        if (!transportista) {
+            return res.status(404).json({ mensaje: 'Transportista no encontrado' });
+        }
+
+        res.status(200).json({
+            mensaje: 'Imagen actualizada exitosamente',
+            transportista
+        });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+};
+
 // "Eliminar" (inhabilitar)
 exports.inhabilitar = async (req, res) => {
     try {
