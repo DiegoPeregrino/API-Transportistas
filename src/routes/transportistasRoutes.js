@@ -6,7 +6,7 @@ const {
     crear,
     actualizar,
     inhabilitar,
-    actualizarImagen // Importar el nuevo método del controlador
+    actualizarImagen
 } = require('../controllers/transportistaController');
 
 const router = express.Router();
@@ -35,8 +35,6 @@ router.get('/:id', validarId, manejarErroresDeValidacion, obtener); // GET /api/
 router.post('/', validarTransportista, manejarErroresDeValidacion, crear); // POST /api/transportistas
 router.put('/:id', [validarId, ...validarTransportista], manejarErroresDeValidacion, actualizar); // PUT /api/transportistas/:id
 router.delete('/:id', validarId, manejarErroresDeValidacion, inhabilitar); // DELETE /api/transportistas/:id
-
-// Nueva ruta para actualizar la imagen
 router.put('/:id/imagen', [validarId, validarImagen], manejarErroresDeValidacion, actualizarImagen); // PUT /api/transportistas/:id/imagen
 
 module.exports = router;
