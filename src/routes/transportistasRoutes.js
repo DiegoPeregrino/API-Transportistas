@@ -5,7 +5,8 @@ const {
     obtener,
     crear,
     actualizar,
-    inhabilitar
+    inhabilitar,
+    actualizarImagen // Importar el nuevo método del controlador
 } = require('../controllers/transportistaController');
 
 const router = express.Router();
@@ -17,6 +18,7 @@ const validarTransportista = [
     body('ruc').notEmpty().withMessage('El RUC es obligatorio'),
     body('ruc').isLength({ min: 11, max: 11 }).withMessage('El RUC debe tener 11 caracteres')
 ];
+const validarImagen = body('imagen').isURL().withMessage('La imagen debe ser una URL válida');
 
 // Middleware para manejar errores de validación
 const manejarErroresDeValidacion = (req, res, next) => {
@@ -33,5 +35,8 @@ router.get('/:id', validarId, manejarErroresDeValidacion, obtener); // GET /api/
 router.post('/', validarTransportista, manejarErroresDeValidacion, crear); // POST /api/transportistas
 router.put('/:id', [validarId, ...validarTransportista], manejarErroresDeValidacion, actualizar); // PUT /api/transportistas/:id
 router.delete('/:id', validarId, manejarErroresDeValidacion, inhabilitar); // DELETE /api/transportistas/:id
+
+// Nueva ruta para actualizar la imagen
+router.put('/:id/imagen', [validarId, validarImagen], manejarErroresDeValidacion, actualizarImagen); // PUT /api/transportistas/:id/imagen
 
 module.exports = router;

@@ -6,7 +6,8 @@ const TransportistaSchema = new mongoose.Schema({
     direccion: String,
     telefono: String,
     email: String,
-    activo: { type: Boolean, default: true }
+    activo: { type: Boolean, default: true },
+    imagen: { type: String } // URL de la imagen
 }, { 
     timestamps: true,
     versionKey: false // Elimina el campo __v
