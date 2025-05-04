@@ -63,5 +63,4 @@ app.use((err, req, res, next) => {
 // Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🟢 Servidor ejecutándose en http://0.0.0.0:${PORT}`);
-    console.log(`🌐 API disponible en https://transportistas-api.onrender.com`);
 });
