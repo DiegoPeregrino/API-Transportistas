@@ -4,7 +4,6 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 const transportistaRoutes = require('./routes/transportistasRoutes');
-const helmet = require('helmet');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -19,9 +18,8 @@ requiredEnvVars.forEach((varName) => {
 });
 
 // Configuración básica
-app.use(cors());
+app.use(cors({ origin: '*' })); // Permitir todas las solicitudes (para pruebas)
 app.use(express.json());
-app.use(helmet());
 
 // Conexión a MongoDB
 connectDB();
@@ -39,6 +37,19 @@ app.get('/api/health', (req, res) => {
     });
 });
 
+// Ruta raíz
+app.get('/', (req, res) => {
+    res.status(200).json({
+        mensaje: 'Bienvenido a la API de Transportistas',
+        documentacion: 'Visita /api/health para verificar el estado del servidor',
+        rutas: [
+            { metodo: 'GET', ruta: '/api/health', descripcion: 'Verificar el estado del servidor' },
+            { metodo: 'GET', ruta: '/api/transportistas', descripcion: 'Listar transportistas' },
+            { metodo: 'POST', ruta: '/api/transportistas', descripcion: 'Crear un nuevo transportista' }
+        ]
+    });
+});
+
 // Manejo de errores
 app.use((err, req, res, next) => {
     const statusCode = err.status || 500;
@@ -52,4 +63,5 @@ app.use((err, req, res, next) => {
 // Iniciar servidor
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`🟢 Servidor ejecutándose en http://0.0.0.0:${PORT}`);
+    console.log(`🌐 API disponible en https://transportistas-api.onrender.com`);
 });
