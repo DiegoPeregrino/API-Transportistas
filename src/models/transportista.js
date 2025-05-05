@@ -1,16 +1,12 @@
 const mongoose = require('mongoose');
 
+// Definición del esquema de Transportista
 const TransportistaSchema = new mongoose.Schema({
-    nombre: { type: String, required: true },
-    ruc: { type: String, required: true, unique: true },
-    direccion: String,
-    telefono: String,
-    email: String,
-    activo: { type: Boolean, default: true },
-    imagen: { type: String } // URL de la imagen
-}, { 
-    timestamps: true,
-    versionKey: false // Elimina el campo __v
+    codigo: { type: Number, required: true, unique: true }, // Código único del transportista
+    nombre: { type: String, required: true }, // Nombre del transportista
+    sueldo: { type: Number, required: true } // Sueldo del transportista
+}, {
+    timestamps: true // Agrega campos createdAt y updatedAt automáticamente
 });
 
 module.exports = mongoose.model('Transportista', TransportistaSchema);

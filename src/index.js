@@ -25,7 +25,7 @@ app.use(express.json());
 connectDB();
 
 // Rutas principales
-app.use('/api/transportistas', transportistaRoutes);
+app.use('/transportista', transportistaRoutes); // Cambiar el prefijo a /transportista
 
 // Ruta de verificación de salud
 app.get('/api/health', (req, res) => {
@@ -43,9 +43,8 @@ app.get('/', (req, res) => {
         mensaje: 'Bienvenido a la API de Transportistas',
         documentacion: 'Visita /api/health para verificar el estado del servidor',
         rutas: [
-            { metodo: 'GET', ruta: '/api/health', descripcion: 'Verificar el estado del servidor' },
-            { metodo: 'GET', ruta: '/api/transportistas', descripcion: 'Listar transportistas' },
-            { metodo: 'POST', ruta: '/api/transportistas', descripcion: 'Crear un nuevo transportista' }
+            { metodo: 'GET', ruta: '/transportista/lista', descripcion: 'Listar transportistas' },
+            { metodo: 'POST', ruta: '/transportista/registrar', descripcion: 'Registrar un nuevo transportista' }
         ]
     });
 });
